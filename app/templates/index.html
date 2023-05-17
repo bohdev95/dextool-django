@@ -64,9 +64,9 @@
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                          <span class="input-group-text">File Name</span>
+                          <span class="input-group-text">Summary Bins</span>
                         </div>
-                        <input type="text" class="form-control" id="new_project_file_name">
+                        <input type="text" class="form-control" id="summary_bins">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
@@ -95,13 +95,13 @@
    
    function add_project(){
     var name = document.getElementById("new_project_name").value;
-    var file_name = document.getElementById("new_project_file_name").value;
+    var summary_bins = document.getElementById("summary_bins").value;
     var download_url = document.getElementById("new_project_download_url").value;
 
     var xhr = new XMLHttpRequest();
     var form = new FormData();
     form.append('name', name);
-    form.append('file_name', file_name);
+    form.append('summary_bins', summary_bins);
     form.append('download_url', download_url);
     xhr.open('POST', '/api/add_project');
     xhr.responseType = 'json';

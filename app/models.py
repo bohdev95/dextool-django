@@ -18,5 +18,6 @@ class Data(models.Model):
 class Projects(models.Model):
     name = models.TextField(null=True, blank=True)
     file_name = models.TextField(null=True, blank=True)
+    summary_bins = models.TextField(null=True, blank=True)
     download_url = models.TextField(null=True, blank=True)
     status = models.IntegerField(null=True, blank=True)

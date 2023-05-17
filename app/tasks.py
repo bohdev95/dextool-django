@@ -18,9 +18,10 @@ CSV_URL = 'https://etherscan.io/exportData?type=tokenholders&contract=0xfb7b4564
 
 CAPTCHA_KEY = "92a71bdc5752c5abc369a6389cdf77d8"
 
-DOWNLOAD_PATH = 'C:\\Users\\Administrator\\Downloads'
+DOWNLOAD_PATH = "C:\\Users\Admin\Downloads"
 
 CSV_FILENAME = 'export-tokenholders-for-contract-0xfb7b4564402e5500db5bb6d63ae671302777c75a'
+
 @task()
 def hello_task():
     print("hello wold")
@@ -33,6 +34,8 @@ def every_one_mins():
     for project in project_list:
         CSV_FILENAME = project['file_name']
         CSV_URL = project['download_url']
+       
+        summary_bins = project['summary_bins']
 
         for root, dirs, files in os.walk(DOWNLOAD_PATH):
             for file in files:
@@ -49,7 +52,8 @@ def every_one_mins():
 
 
         driver = webdriver.Chrome()
-
+        driver.maximize_window()
+        
         solver = RecaptchaSolver(driver=driver)
 
         driver.get(CSV_URL)
@@ -99,12 +103,16 @@ def every_one_mins():
 
         # solver.click_recaptcha_v2(iframe=recaptcha_iframe)
 
-        
-        time.sleep(10)
-        Download_btn = driver.find_element(By.ID, "new_ContentPlaceHolder1_btnSubmit")
-        time.sleep(20)
-        Download_btn.click()
-        
+        while (True):
+            time.sleep(5)
+            Download_btn = driver.find_element(By.ID, "new_ContentPlaceHolder1_btnSubmit")
+            try:
+                Download_btn.click()
+                print("available")
+                break
+            except:
+                print("not available")
+
         time.sleep(180)
         
         driver.quit()
@@ -112,7 +120,13 @@ def every_one_mins():
         total_supply = 100000000
         now = make_aware(datetime.datetime.today())
 
-        summary_table = Summary_table(file = DOWNLOAD_PATH + '\\' + CSV_FILENAME + ".csv", total_supply=total_supply)
+        print(summary_bins.split(','))
+        bins_array = summary_bins.split(',')
+        for i in range(len(bins_array)):
+            bins_array[i] = int(bins_array[i])
+
+
+        summary_table = Summary_table(file = DOWNLOAD_PATH + '\\' + CSV_FILENAME + ".csv", total_supply=total_supply, bins=bins_array)
 
         for i in range(len(summary_table)):
                 row = summary_table.iloc[i]
